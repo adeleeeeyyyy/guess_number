@@ -1,0 +1,97 @@
+<<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Guessing Game</title>
+    <!-- Material UI CDN -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@mui/material/umd/material-ui.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js" crossorigin></script>
+</head>
+<body style="background-color: #f0f2f5;">
+    <div id="root"></div>
+    <script type="text/babel">
+        const { Button, TextField, Container, Typography, Card, CardContent, Box } = MaterialUI;
+
+        const NumberGuessingGame = () => {
+            const [guess, setGuess] = React.useState("");
+            const [message, setMessage] = React.useState("");
+            const [randomNumber, setRandomNumber] = React.useState(Math.floor(Math.random() * 100) + 1);
+            const [attempts, setAttempts] = React.useState(0);
+
+            const handleGuessChange = (event) => {
+                setGuess(event.target.value);
+            };
+
+            const handleGuessSubmit = () => {
+                const userGuess = parseInt(guess);
+                setAttempts(attempts + 1);
+
+                if (userGuess === randomNumber) {
+                    setMessage(`Correct! The number was ${randomNumber}. It took you ${attempts + 1} attempts.`);
+                } else if (userGuess < randomNumber) {
+                    setMessage("Too low! Try again.");
+                } else {
+                    setMessage("Too high! Try again.");
+                }
+            };
+
+            const handleReset = () => {
+                setGuess("");
+                setMessage("");
+                setRandomNumber(Math.floor(Math.random() * 100) + 1);
+                setAttempts(0);
+            };
+
+            return (
+                <Container maxWidth="sm" style={{ marginTop: '50px' }}>
+                    <Card>
+                        <CardContent>
+                            <Typography variant="h4" gutterBottom style={{ textAlign: 'center', color: '#3f51b5' }}>
+                                Number Guessing Game
+                            </Typography>
+                            <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center">
+                                <TextField
+                                    label="Enter your guess"
+                                    variant="outlined"
+                                    value={guess}
+                                    onChange={handleGuessChange}
+                                    style={{ marginBottom: '20px', width: '100%' }}
+                                />
+                                <Box display="flex" justifyContent="space-between" width="100%" mb={2}>
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        onClick={handleGuessSubmit}
+                                        style={{ marginRight: '10px', flex: 1 }}
+                                    >
+                                        Submit Guess
+                                    </Button>
+                                    <Button
+                                        variant="outlined"
+                                        color="secondary"
+                                        onClick={handleReset}
+                                        style={{ flex: 1 }}
+                                    >
+                                        Reset
+                                    </Button>
+                                </Box>
+                                <Typography variant="h6" style={{ marginTop: '20px', color: '#f50057' }}>
+                                    {message}
+                                </Typography>
+                            </Box>
+                        </CardContent>
+                    </Card>
+                </Container>
+            );
+        };
+
+        ReactDOM.render(<NumberGuessingGame />, document.getElementById('root'));
+    </script>
+</body>
+</html>
+
